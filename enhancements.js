@@ -1,3 +1,9 @@
+// Load the film-club bidding rules as a classic script so it shares
+// the same app state and helper functions as app.js.
+const biddingRulesScript = document.createElement("script");
+biddingRulesScript.src = "bidding-rules.js";
+document.head.appendChild(biddingRulesScript);
+
 // =====================================================
 // WINTER FILM CLUB — EXPERIENCE ENHANCEMENTS
 // Personalises the nomination screen and turns the final
