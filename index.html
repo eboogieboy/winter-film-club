@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#132238" />
+  <title>Winter Film Club</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <header class="hero">
+
+    <div class="hero-inner">
+
+      <div>
+        <p class="eyebrow">
+          STEPH · ELLIOT · DAN · WENDY
+        </p>
+
+        <h1>Winter Film Club</h1>
+
+        <p class="intro">
+          Ten films. Four opinions. One winter.
+        </p>
+      </div>
+
+      <div class="profile-box">
+
+        <label for="activePerson">
+          Who are you?
+        </label>
+
+        <select id="activePerson"></select>
+
+      </div>
+
+    </div>
+
+    <div
+      class="phase-strip"
+      aria-label="Film club progress"
+    >
+
+      <div
+        class="phase active"
+        data-phase="nominations"
+      >
+        <span>1</span>
+        <strong>Pick</strong>
+        <small>2 each</small>
+      </div>
+
+      <div
+        class="phase"
+        data-phase="bidding"
+      >
+        <span>2</span>
+        <strong>Bid</strong>
+        <small>final 2</small>
+      </div>
+
+      <div
+        class="phase"
+        data-phase="watching"
+      >
+        <span>3</span>
+        <strong>Watch</strong>
+        <small>all 10</small>
+      </div>
+
+      <div
+        class="phase"
+        data-phase="reviewing"
+      >
+        <span>4</span>
+        <strong>Review</strong>
+        <small>when 4/4 watched</small>
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <main class="wrap">
+
+    <!-- PICKS -->
+
+    <section
+      id="nominationsSection"
+      class="panel"
+    >
+
+      <div class="section-heading">
+
+        <div>
+          <p class="kicker">
+            ROUND ONE
+          </p>
+
+          <h2>
+            Everyone gets two guaranteed films
+          </h2>
+        </div>
+
+        <p class="section-note">
+          No tactical voting here.
+          Your two picks are safe.
+        </p>
+
+      </div>
+
+
+      <div
+        id="nominationGrid"
+        class="people-grid"
+      ></div>
+
+
+      <div class="divider"></div>
+
+
+      <!-- WILDCARDS -->
+
+      <div class="section-heading compact">
+
+        <div>
+          <p class="kicker">
+            WILDCARDS
+          </p>
+
+          <h2>
+            Suggest contenders for spots 9 &amp; 10
+          </h2>
+        </div>
+
+        <p class="section-note">
+          Add as many as you like.
+          The group will bid on them next.
+        </p>
+
+      </div>
+
+
+      <form
+        id="wildcardForm"
+        class="wildcard-form"
+      >
+
+        <input
+          id="wildcardTitle"
+          type="text"
+          maxlength="80"
+          placeholder="Film title…"
+          required
+        />
+
+        <button type="submit">
+          Add wildcard
+        </button>
+
+      </form>
+
+
+      <div
+        id="wildcardList"
+        class="wildcard-list empty-state"
+      ></div>
+
+
+      <div class="action-row">
+
+        <button
+          id="startBiddingBtn"
+          class="primary"
+          type="button"
+        >
+          Start the bidding
+        </button>
+
+        <p
+          id="startBiddingHint"
+          class="hint"
+        ></p>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- BIDDING -->
+
+    <section
+      id="biddingSection"
+      class="panel hidden"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="kicker">
+            ROUND TWO
+          </p>
+
+          <h2>
+            Spend 5 tokens on the films you most want
+          </h2>
+
+        </div>
+
+
+        <div class="token-box">
+
+          <span id="bidPersonName">
+            Dan
+          </span>
+
+          <strong>
+            <span id="tokensRemaining">
+              5
+            </span>
+            tokens left
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <p class="section-note wide">
+        Put all five on one film or spread them around.
+        When everyone has used their tokens, the top two
+        wildcard films complete the winter ten.
+      </p>
+
+
+      <div
+        id="biddingGrid"
+        class="bid-grid"
+      ></div>
+
+
+      <div class="action-row split">
+
+        <button
+          id="backToNominationsBtn"
+          class="secondary"
+          type="button"
+        >
+          Back to picks
+        </button>
+
+        <button
+          id="lockFinalBtn"
+          class="primary"
+          type="button"
+        >
+          Lock the final 10
+        </button>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- WATCHING -->
+
+    <section
+      id="watchingSection"
+      class="panel hidden"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="kicker">
+            THE WINTER TEN
+          </p>
+
+          <h2>
+            Watch them in any order
+          </h2>
+
+        </div>
+
+
+        <div class="progress-big">
+
+          <strong id="fullyWatchedCount">
+            0
+          </strong>
+
+          <span>
+            / 10 ready to discuss
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <p class="section-note wide">
+        Tick a film after you've watched it.
+        When all four of you have watched the same film,
+        its scorecard and discussion area unlock.
+      </p>
+
+
+      <div
+        id="movieGrid"
+        class="movie-grid"
+      ></div>
+
+    </section>
+
+
+
+    <!-- RANKINGS -->
+
+    <section
+      id="finalTableSection"
+      class="panel hidden"
+    >
+
+      <div class="section-heading compact">
+
+        <div>
+
+          <p class="kicker">
+            SEASON TABLE
+          </p>
+
+          <h2>
+            How the films are doing
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="rankingTable"
+        class="ranking-table"
+      ></div>
+
+    </section>
+
+
+    <footer>
+
+      <button
+        id="resetBtn"
+        class="text-button"
+        type="button"
+      >
+        Reset film club
+      </button>
+
+      <p>
+        Shared between Steph, Elliot, Dan and Wendy.
+      </p>
+
+    </footer>
+
+  </main>
+
+
+
+  <!-- NOMINATION CARD TEMPLATE -->
+
+  <template id="nominationCardTemplate">
+
+    <article class="person-card">
+
+      <div class="person-title">
+
+        <span class="person-dot"></span>
+
+        <h3></h3>
+
+      </div>
+
+
+      <label>
+
+        Pick 1
+
+        <input
+          class="pick-input pick-one"
+          type="text"
+          maxlength="80"
+          placeholder="Film title"
+        />
+
+      </label>
+
+
+      <label>
+
+        Pick 2
+
+        <input
+          class="pick-input pick-two"
+          type="text"
+          maxlength="80"
+          placeholder="Film title"
+        />
+
+      </label>
+
+
+      <button
+        class="save-picks secondary"
+        type="button"
+      >
+        Save picks
+      </button>
+
+    </article>
+
+  </template>
+
+
+
+  <!-- MOVIE CARD TEMPLATE -->
+
+  <template id="movieCardTemplate">
+
+    <article class="movie-card">
+
+      <div class="poster">
+
+        <span class="movie-number"></span>
+
+        <div class="poster-mark">
+          WFC
+        </div>
+
+      </div>
+
+
+      <div class="movie-body">
+
+        <div class="movie-meta">
+
+          <span class="source-pill"></span>
+
+          <span class="watched-count"></span>
+
+        </div>
+
+
+        <h3 class="movie-title"></h3>
+
+        <p class="picked-by"></p>
+
+
+        <div class="watchers"></div>
+
+
+        <button
+          class="watched-toggle secondary"
+          type="button"
+        ></button>
+
+
+        <div class="review-lock">
+
+          <strong>
+            Discussion locked
+          </strong>
+
+          <span>
+            Waiting for everyone to watch it.
+          </span>
+
+        </div>
+
+
+        <div class="review-panel hidden">
+
+          <div class="unlock-banner">
+            4/4 watched · discussion unlocked
+          </div>
+
+
+          <div class="score-row">
+
+            <label>
+              My score
+            </label>
+
+            <select class="score-select">
+
+              <option value="">
+                —
+              </option>
+
+              <option>10</option>
+              <option>9</option>
+              <option>8</option>
+              <option>7</option>
+              <option>6</option>
+              <option>5</option>
+              <option>4</option>
+              <option>3</option>
+              <option>2</option>
+              <option>1</option>
+
+            </select>
+
+          </div>
+
+
+          <label class="review-label">
+
+            My quick review
+
+            <textarea
+              class="review-text"
+              maxlength="240"
+              placeholder="Worth the hype? Best bit? Never again?"
+            ></textarea>
+
+          </label>
+
+
+          <button
+            class="save-review primary small"
+            type="button"
+          >
+            Save my review
+          </button>
+
+
+          <div class="group-score"></div>
+
+          <div class="review-list"></div>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </template>
+
+
+
+  <!-- SUPABASE -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
