@@ -1,0 +1,645 @@
+/* =====================================================
+   WINTER FILM CLUB — MOBILE EXPERIENCE
+   Loaded after styles.css so these rules win on phones.
+   ===================================================== */
+
+@media (max-width: 760px) {
+
+  :root {
+    --mobile-gutter: 12px;
+    --mobile-radius: 18px;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background:
+      linear-gradient(
+        180deg,
+        #eef2f3 0,
+        #f5f2ea 240px,
+        #f4f1e8 100%
+      );
+  }
+
+  button,
+  select,
+  input,
+  textarea {
+    min-height: 44px;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    padding: 22px 16px 0;
+  }
+
+  .hero-inner {
+    gap: 20px;
+  }
+
+  .eyebrow {
+    margin-bottom: 7px;
+    font-size: .64rem;
+    letter-spacing: .13em;
+  }
+
+  h1 {
+    max-width: 320px;
+    font-size: clamp(2.55rem, 14vw, 4rem);
+    line-height: .92;
+  }
+
+  .intro {
+    margin-top: 10px;
+    font-size: .98rem;
+  }
+
+  .profile-box {
+    padding-bottom: 0;
+  }
+
+  .profile-box label {
+    margin-bottom: 6px;
+    font-size: .7rem;
+  }
+
+  .profile-box select {
+    min-height: 48px;
+    padding: 11px 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.11);
+  }
+
+  /* ---------- PHASE STRIP ---------- */
+
+  .phase-strip {
+    width: calc(100% + 32px);
+    margin: 22px -16px 0;
+    padding: 0 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: visible;
+    border-top: 1px solid rgba(255,255,255,.12);
+  }
+
+  .phase {
+    min-width: 0;
+    padding: 13px 3px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-align: center;
+  }
+
+  .phase span {
+    width: 27px;
+    height: 27px;
+    flex: 0 0 27px;
+    margin-bottom: 2px;
+    font-size: .76rem;
+  }
+
+  .phase strong {
+    font-size: .72rem;
+  }
+
+  .phase small {
+    display: none;
+  }
+
+  /* ---------- MAIN LAYOUT ---------- */
+
+  .wrap {
+    width: 100%;
+    margin: 0 auto 44px;
+  }
+
+  .panel {
+    margin: 0;
+    padding: 25px 16px 28px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: rgba(255,253,248,.96);
+    backdrop-filter: none;
+  }
+
+  .panel + .panel:not(.hidden) {
+    border-top: 8px solid #ebe5d8;
+  }
+
+  .section-heading,
+  .section-heading.compact {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(1.7rem, 8vw, 2.15rem);
+    line-height: 1.02;
+  }
+
+  .kicker {
+    margin-bottom: 6px;
+    font-size: .68rem;
+  }
+
+  .section-note,
+  .section-note.wide {
+    max-width: none;
+    margin: 0 0 20px;
+    font-size: .9rem;
+    line-height: 1.5;
+  }
+
+  /* ---------- PICKS ---------- */
+
+  .people-grid {
+    gap: 12px;
+  }
+
+  .person-card {
+    padding: 16px;
+    border-radius: var(--mobile-radius);
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(19,34,56,.055);
+  }
+
+  .person-title {
+    margin-bottom: 12px;
+  }
+
+  .person-title h3 {
+    font-size: 1.08rem;
+  }
+
+  .pick-block {
+    margin: 12px 0;
+  }
+
+  .pick-block > label,
+  .review-label {
+    font-size: .7rem;
+  }
+
+  .movie-search-input {
+    min-height: 48px;
+    padding: 12px 13px;
+    border-radius: 13px;
+  }
+
+  .movie-search-results {
+    top: calc(100% + 5px);
+    max-height: min(52vh, 390px);
+    border-radius: 14px;
+    box-shadow: 0 18px 45px rgba(19,34,56,.22);
+  }
+
+  .search-result {
+    grid-template-columns: 52px 1fr;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .search-result img,
+  .result-no-poster {
+    width: 52px;
+    height: 76px;
+  }
+
+  .chosen-movie {
+    grid-template-columns: 52px minmax(0,1fr) auto;
+    gap: 10px;
+    padding: 8px;
+  }
+
+  .chosen-poster,
+  .chosen-no-poster {
+    width: 52px;
+    height: 76px;
+  }
+
+  .chosen-copy strong {
+    font-size: .9rem;
+  }
+
+  .change-movie {
+    grid-column: auto;
+    min-height: 38px;
+  }
+
+  .save-picks {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  /* ---------- WILDCARDS ---------- */
+
+  .divider {
+    margin: 28px 0;
+  }
+
+  .wildcard-picker {
+    max-width: none;
+  }
+
+  .wildcard-add-row {
+    margin-top: 10px;
+  }
+
+  #addWildcardBtn {
+    width: 100%;
+  }
+
+  .wildcard-list {
+    gap: 9px;
+    margin-top: 16px;
+  }
+
+  .wildcard-chip {
+    grid-template-columns: 50px minmax(0,1fr) 36px;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  .wildcard-chip img,
+  .wildcard-no-poster {
+    width: 50px;
+    height: 73px;
+  }
+
+  .chip-remove {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  /* ---------- ACTIONS ---------- */
+
+  .action-row,
+  .action-row.split {
+    width: 100%;
+    margin-top: 22px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-row.split {
+    flex-direction: column-reverse;
+  }
+
+  .action-row > button {
+    width: 100%;
+    min-height: 50px;
+  }
+
+  .hint {
+    text-align: center;
+    font-size: .82rem;
+    line-height: 1.4;
+  }
+
+  /* ---------- BIDDING ---------- */
+
+  #biddingSection .section-heading {
+    margin-bottom: 12px;
+  }
+
+  .token-box {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .token-box span,
+  .token-box strong {
+    margin: 0;
+  }
+
+  .token-box strong {
+    font-size: 1.02rem;
+  }
+
+  .bid-grid {
+    gap: 10px;
+  }
+
+  .bid-card {
+    grid-template-columns: 70px minmax(0,1fr);
+    gap: 12px;
+    padding: 10px;
+    border-radius: 16px;
+    box-shadow: 0 5px 16px rgba(19,34,56,.04);
+  }
+
+  .bid-card.top-two {
+    border-color: rgba(84,115,92,.52);
+    box-shadow:
+      inset 4px 0 0 var(--green),
+      0 6px 18px rgba(84,115,92,.09);
+  }
+
+  .bid-poster {
+    width: 70px;
+    height: 103px;
+    border-radius: 9px;
+  }
+
+  .bid-card h3 {
+    margin-bottom: 5px;
+    font-size: 1rem;
+    line-height: 1.15;
+  }
+
+  .bid-card p {
+    line-height: 1.35;
+  }
+
+  .bid-controls {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    gap: 8px;
+    width: 100%;
+    padding-top: 4px;
+  }
+
+  .bid-controls button {
+    width: 48px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 1.15rem;
+  }
+
+  .bid-controls strong {
+    min-width: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #f5f2eb;
+  }
+
+  /* ---------- WINTER TEN ---------- */
+
+  #watchingSection {
+    padding-top: 27px;
+  }
+
+  #watchingSection .section-heading {
+    gap: 14px;
+  }
+
+  .progress-big {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 15px;
+    background: #eef3f0;
+  }
+
+  .progress-big strong {
+    font-size: 2.15rem;
+  }
+
+  .progress-big span {
+    font-size: .84rem;
+  }
+
+  .movie-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .movie-card {
+    grid-template-columns: 112px minmax(0,1fr);
+    min-height: 168px;
+    border-radius: 17px;
+    box-shadow: 0 7px 22px rgba(19,34,56,.055);
+  }
+
+  .poster {
+    min-height: 100%;
+    padding: 9px;
+    aspect-ratio: auto;
+  }
+
+  .movie-number {
+    width: 32px;
+    height: 32px;
+    font-size: .92rem;
+  }
+
+  .poster-mark {
+    font-size: .55rem;
+  }
+
+  .movie-body {
+    min-width: 0;
+    padding: 12px;
+  }
+
+  .movie-meta {
+    align-items: flex-start;
+    gap: 7px;
+  }
+
+  .source-pill {
+    padding: 4px 7px;
+    font-size: .59rem;
+    line-height: 1.2;
+  }
+
+  .watched-count {
+    flex: 0 0 auto;
+    font-size: .68rem;
+  }
+
+  .movie-title {
+    margin: 8px 0 3px;
+    font-size: 1.28rem;
+    line-height: 1.05;
+  }
+
+  .movie-facts,
+  .picked-by {
+    font-size: .74rem;
+  }
+
+  .picked-by {
+    margin-bottom: 10px;
+  }
+
+  .watchers {
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .watcher {
+    padding: 5px 6px;
+    font-size: .65rem;
+  }
+
+  .watched-toggle {
+    min-height: 44px;
+    padding: 9px 10px;
+    font-size: .8rem;
+  }
+
+  .review-lock {
+    margin-top: 10px;
+    padding: 9px 10px;
+  }
+
+  .review-lock strong {
+    font-size: .76rem;
+  }
+
+  .review-lock span {
+    font-size: .7rem;
+    line-height: 1.35;
+  }
+
+  .unlock-banner {
+    margin: 10px 0;
+    padding: 9px 10px;
+    font-size: .72rem;
+  }
+
+  .score-row {
+    grid-template-columns: 1fr 80px;
+  }
+
+  .review-text {
+    min-height: 94px;
+  }
+
+  .save-review {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .group-score {
+    font-size: 1rem;
+  }
+
+  /* ---------- SEASON TABLE ---------- */
+
+  #finalTableSection {
+    border-top: 8px solid #ebe5d8;
+  }
+
+  .ranking-row {
+    grid-template-columns: 28px minmax(0,1fr) 66px;
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  .rank-number {
+    font-size: 1.05rem;
+  }
+
+  .rank-title strong {
+    font-size: .86rem;
+    line-height: 1.2;
+  }
+
+  .rank-title span {
+    font-size: .68rem;
+  }
+
+  .rank-score {
+    font-size: .84rem;
+  }
+
+  /* ---------- FOOTER ---------- */
+
+  footer {
+    padding: 22px 16px 28px;
+    gap: 15px;
+    font-size: .72rem;
+  }
+
+  .tmdb-credit {
+    text-align: left;
+  }
+
+}
+
+
+/* Very narrow phones */
+@media (max-width: 380px) {
+
+  .hero {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .phase-strip {
+    width: calc(100% + 26px);
+    margin-left: -13px;
+    margin-right: -13px;
+  }
+
+  .panel {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .chosen-movie {
+    grid-template-columns: 48px minmax(0,1fr);
+  }
+
+  .change-movie {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .movie-card {
+    grid-template-columns: 102px minmax(0,1fr);
+  }
+
+  .movie-title {
+    font-size: 1.16rem;
+  }
+
+  .watcher {
+    padding: 4px 5px;
+    font-size: .61rem;
+  }
+
+}
+
+
+/* Small tablets: preserve the mobile feel but use the extra room. */
+@media (min-width: 761px) and (max-width: 980px) {
+
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-card {
+    grid-template-columns: 150px minmax(0,1fr);
+  }
+
+  .bid-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
