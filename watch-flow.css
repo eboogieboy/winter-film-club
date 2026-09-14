@@ -26,8 +26,13 @@
   color: #fff;
 }
 
+.next-film-banner-copy {
+  min-width: 0;
+}
+
 .next-film-banner-copy span,
-.next-film-banner-copy strong {
+.next-film-banner-copy strong,
+.next-film-banner-copy small {
   display: block;
 }
 
@@ -44,14 +49,23 @@
   font-size: .95rem;
 }
 
-.next-film-random {
+.next-film-banner-copy small {
+  margin-top: 3px;
+  color: rgba(255,255,255,.7);
+  font-size: .7rem;
+  line-height: 1.35;
+}
+
+.whatsapp-share-btn {
   flex: 0 0 auto;
-  padding: 6px 9px;
-  border: 1px solid rgba(255,255,255,.2);
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid rgba(255,255,255,.28);
   border-radius: 999px;
-  color: rgba(255,255,255,.82);
-  font-size: .67rem;
-  font-weight: 800;
+  background: #fff;
+  color: #132238;
+  font-weight: 900;
+  cursor: pointer;
   white-space: nowrap;
 }
 
@@ -69,7 +83,40 @@
   color: #30445f;
 }
 
-.opinion-badge {
+.discussion-callout {
+  margin: 12px 0;
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(143,75,50,.2);
+  background: #f3e5dc;
+}
+
+.discussion-callout strong,
+.discussion-callout span {
+  display: block;
+}
+
+.discussion-callout strong {
+  color: #8f4b32;
+  font-size: .88rem;
+}
+
+.discussion-callout span {
+  margin-top: 4px;
+  color: #596474;
+  font-size: .77rem;
+  line-height: 1.45;
+}
+
+.review-completion-note {
+  margin: 9px 0 0;
+  color: #6b7480;
+  font-size: .7rem;
+  line-height: 1.4;
+}
+
+.opinion-badge,
+.release-badge {
   display: inline-flex;
   align-items: center;
   min-height: 26px;
@@ -89,6 +136,11 @@
 .opinion-badge.divided {
   background: #f6e7df;
   color: #8f4b32;
+}
+
+.release-badge {
+  background: #e9eef5;
+  color: #44556d;
 }
 
 .rank-opinion-badge {
@@ -149,6 +201,16 @@
   line-height: 1.45;
 }
 
+.waiting-film-card {
+  opacity: .78;
+}
+
+.waiting-film-card .watched-toggle[disabled],
+.completed-film-card .watched-toggle[disabled] {
+  cursor: default;
+  opacity: .62;
+}
+
 .movie-card:not(.next-film-card) .later-film-label {
   display: inline-block;
   margin: 0 0 8px;
@@ -161,13 +223,14 @@
 
 @media (max-width: 760px) {
   .next-film-card {
+    grid-column: auto;
     box-shadow: 0 10px 24px rgba(19,34,56,.11);
   }
 
   .next-film-banner {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
-    gap: 7px;
+    gap: 9px;
     margin-bottom: 10px;
     padding: 10px 11px;
   }
@@ -176,15 +239,20 @@
     font-size: .88rem;
   }
 
-  .next-film-random {
-    font-size: .63rem;
+  .whatsapp-share-btn {
+    width: 100%;
   }
 
   .next-film-note {
     font-size: .7rem;
   }
 
-  .opinion-badge {
+  .opinion-badge,
+  .release-badge {
     font-size: .61rem;
+  }
+
+  .waiting-film-card {
+    opacity: .68;
   }
 }
