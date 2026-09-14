@@ -7,6 +7,10 @@ const selectionSynopsisScript = document.createElement("script");
 selectionSynopsisScript.src = "selection-synopsis.js";
 document.head.appendChild(selectionSynopsisScript);
 
+const fullerSynopsisScript = document.createElement("script");
+fullerSynopsisScript.src = "synopsis-fuller.js?v=20260914-1704";
+document.head.appendChild(fullerSynopsisScript);
+
 // =====================================================
 // WINTER FILM CLUB — BIDDING RULES
 // You cannot spend tokens on a wildcard you proposed.
