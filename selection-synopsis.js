@@ -47,7 +47,7 @@
     };
   }
 
-  function shortSynopsis(value, limit = 230) {
+  function shortSynopsis(value, limit = 420) {
     const text = String(value || "")
       .replace(/\s+/g, " ")
       .trim();
@@ -55,7 +55,7 @@
     if (!text) return "";
 
     const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
-    let summary = sentences.slice(0, 2).join(" ").trim();
+    let summary = sentences.slice(0, 3).join(" ").trim();
 
     if (summary.length > limit) {
       summary = summary
@@ -311,7 +311,7 @@
     .wildcard-chip-synopsis p,
     .other-pick-synopsis p {
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -319,7 +319,7 @@
     .bid-synopsis p {
       margin-top: 2px;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 5;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
