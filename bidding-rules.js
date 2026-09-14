@@ -1,22 +1,12 @@
-// Load the movie synopsis enhancements after the core app is available.
-const synopsisScript = document.createElement("script");
-synopsisScript.src = "synopsis.js";
-document.head.appendChild(synopsisScript);
-
-const selectionSynopsisScript = document.createElement("script");
-selectionSynopsisScript.src = "selection-synopsis.js";
-document.head.appendChild(selectionSynopsisScript);
-
-const fullerSynopsisScript = document.createElement("script");
-fullerSynopsisScript.src = "synopsis-fuller.js?v=20260914-1704";
-document.head.appendChild(fullerSynopsisScript);
-
 // =====================================================
 // WINTER FILM CLUB — BIDDING RULES
 // You cannot spend tokens on a wildcard you proposed.
 // =====================================================
 
 (() => {
+  if (window.__WFC_BIDDING_RULES_LOADED__) return;
+  window.__WFC_BIDDING_RULES_LOADED__ = true;
+
   // Ignore proposer self-bids everywhere totals are calculated.
   bidsUsed = function (person) {
     return state.wildcards.reduce((sum, wildcard) => {
