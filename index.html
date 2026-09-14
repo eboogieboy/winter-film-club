@@ -8,777 +8,253 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="mobile.css" />
   <link rel="stylesheet" href="experience.css" />
+  <link rel="stylesheet" href="club-polish.css?v=20260914-1715" />
 </head>
-
 <body>
-
   <header class="hero">
-
     <div class="hero-inner">
-
       <div>
-
-        <p class="eyebrow">
-          STEPH · ELLIOT · DAN · WENDY
-        </p>
-
-        <h1>
-          Winter Film Club
-        </h1>
-
-        <p class="intro">
-          Ten films. Four opinions. One winter.
-        </p>
-
+        <p class="eyebrow">STEPH · ELLIOT · DAN · WENDY</p>
+        <h1>Winter Film Club</h1>
+        <p class="intro">Ten films. Four opinions. One winter.</p>
       </div>
-
-
       <div class="profile-box">
-
-        <label for="activePerson">
-          Who are you?
-        </label>
-
+        <label for="activePerson">Who are you?</label>
         <select id="activePerson"></select>
-
       </div>
-
     </div>
 
-
-    <div
-      class="phase-strip"
-      aria-label="Film club progress"
-    >
-
-      <div
-        class="phase active"
-        data-phase="nominations"
-      >
-        <span>1</span>
-        <strong>Pick</strong>
-        <small>2 each</small>
+    <div class="phase-strip" aria-label="Film club progress">
+      <div class="phase active" data-phase="nominations">
+        <span>1</span><strong>Pick</strong><small>2 each</small>
       </div>
-
-
-      <div
-        class="phase"
-        data-phase="bidding"
-      >
-        <span>2</span>
-        <strong>Bid</strong>
-        <small>final 2</small>
+      <div class="phase" data-phase="bidding">
+        <span>2</span><strong>Bid</strong><small>final 2</small>
       </div>
-
-
-      <div
-        class="phase"
-        data-phase="watching"
-      >
-        <span>3</span>
-        <strong>Watch</strong>
-        <small>all 10</small>
+      <div class="phase" data-phase="watching">
+        <span>3</span><strong>Watch</strong><small>all 10</small>
       </div>
-
-
-      <div
-        class="phase"
-        data-phase="reviewing"
-      >
-        <span>4</span>
-        <strong>Review</strong>
-        <small>when 4/4 watched</small>
+      <div class="phase" data-phase="reviewing">
+        <span>4</span><strong>Review</strong><small>when 4/4 watched</small>
       </div>
-
     </div>
-
   </header>
 
-
   <main class="wrap">
-
-
-    <!-- ======================================
-         NOMINATIONS
-         ====================================== -->
-
-    <section
-      id="nominationsSection"
-      class="panel"
-    >
-
+    <section id="nominationsSection" class="panel">
       <div class="section-heading">
-
         <div>
-
-          <p class="kicker">
-            ROUND ONE
-          </p>
-
-          <h2>
-            Everyone gets two guaranteed films
-          </h2>
-
+          <p class="kicker">ROUND ONE</p>
+          <h2>Everyone gets two guaranteed films</h2>
         </div>
-
-
-        <p class="section-note">
-          Search for the exact film so we get the
-          right poster, year and runtime.
-        </p>
-
+        <p class="section-note">Search for the exact film so we get the right poster, year and runtime.</p>
       </div>
 
-
-      <div
-        id="nominationGrid"
-        class="people-grid"
-      ></div>
-
-
+      <div id="nominationGrid" class="people-grid"></div>
       <div class="divider"></div>
 
-
-      <!-- WILDCARDS -->
-
       <div class="section-heading compact">
-
         <div>
-
-          <p class="kicker">
-            WILDCARDS
-          </p>
-
-          <h2>
-            Suggest contenders for spots 9 &amp; 10
-          </h2>
-
+          <p class="kicker">WILDCARDS</p>
+          <h2>Suggest contenders for spots 9 &amp; 10</h2>
         </div>
-
-
-        <p class="section-note">
-          Anyone can add contenders.
-          The group bids on them next.
-        </p>
-
+        <p class="section-note">Anyone can add contenders. The group bids on them next.</p>
       </div>
 
-
-      <div
-        id="wildcardPicker"
-        class="movie-picker wildcard-picker"
-      >
-
-        <input
-          class="movie-search-input"
-          type="search"
-          autocomplete="off"
-          placeholder="Search for a wildcard film…"
-        />
-
-
-        <div
-          class="movie-search-results hidden"
-        ></div>
-
-
+      <div id="wildcardPicker" class="movie-picker wildcard-picker">
+        <input class="movie-search-input" type="search" autocomplete="off" placeholder="Search for a wildcard film…" />
+        <div class="movie-search-results hidden"></div>
         <div class="chosen-movie hidden">
-
-          <img
-            class="chosen-poster hidden"
-            alt=""
-          />
-
-
-          <div class="chosen-no-poster hidden">
-            FILM
-          </div>
-
-
+          <img class="chosen-poster hidden" alt="" />
+          <div class="chosen-no-poster hidden">FILM</div>
           <div class="chosen-copy">
-
             <strong class="chosen-title"></strong>
-
             <span class="chosen-meta"></span>
-
           </div>
-
-
-          <button
-            class="change-movie secondary"
-            type="button"
-          >
-            Change
-          </button>
-
+          <button class="change-movie secondary" type="button">Change</button>
         </div>
-
       </div>
-
 
       <div class="wildcard-add-row">
-
-        <button
-          id="addWildcardBtn"
-          class="primary"
-          type="button"
-          disabled
-        >
-          Add wildcard
-        </button>
-
+        <button id="addWildcardBtn" class="primary" type="button" disabled>Add wildcard</button>
       </div>
-
-
-      <div
-        id="wildcardList"
-        class="wildcard-list empty-state"
-      ></div>
-
+      <div id="wildcardList" class="wildcard-list empty-state"></div>
 
       <div class="action-row">
-
-        <button
-          id="startBiddingBtn"
-          class="primary"
-          type="button"
-        >
-          Start the bidding
-        </button>
-
-
-        <p
-          id="startBiddingHint"
-          class="hint"
-        ></p>
-
+        <button id="startBiddingBtn" class="primary" type="button">Start the bidding</button>
+        <p id="startBiddingHint" class="hint"></p>
       </div>
-
     </section>
 
-
-
-    <!-- ======================================
-         BIDDING
-         ====================================== -->
-
-    <section
-      id="biddingSection"
-      class="panel hidden"
-    >
-
+    <section id="biddingSection" class="panel hidden">
       <div class="section-heading">
-
         <div>
-
-          <p class="kicker">
-            ROUND TWO
-          </p>
-
-          <h2>
-            Spend 5 tokens on the films you most want
-          </h2>
-
+          <p class="kicker">ROUND TWO</p>
+          <h2>Spend 5 tokens on the films you most want</h2>
         </div>
-
-
         <div class="token-box">
-
-          <span id="bidPersonName">
-            Dan
-          </span>
-
-          <strong>
-
-            <span id="tokensRemaining">
-              5
-            </span>
-
-            tokens left
-
-          </strong>
-
+          <span id="bidPersonName">Dan</span>
+          <strong><span id="tokensRemaining">5</span> tokens left</strong>
         </div>
-
       </div>
 
-
       <p class="section-note wide">
-
-        Put all five on one film or spread them around.
-        When everyone has used their tokens, the top two
-        complete the winter ten.
-
+        Put all five on one film or spread them around. When everyone has used their tokens, the top two complete the winter ten.
       </p>
 
-
-      <div
-        id="biddingGrid"
-        class="bid-grid"
-      ></div>
-
+      <div id="biddingGrid" class="bid-grid"></div>
 
       <div class="action-row split">
-
-        <button
-          id="backToNominationsBtn"
-          class="secondary"
-          type="button"
-        >
-          Back to picks
-        </button>
-
-
-        <button
-          id="lockFinalBtn"
-          class="primary"
-          type="button"
-        >
-          Lock the final 10
-        </button>
-
+        <button id="backToNominationsBtn" class="secondary" type="button">Back to picks</button>
+        <button id="lockFinalBtn" class="primary" type="button">Lock the final 10</button>
       </div>
-
     </section>
 
-
-
-    <!-- ======================================
-         WATCHING
-         ====================================== -->
-
-    <section
-      id="watchingSection"
-      class="panel hidden"
-    >
-
+    <section id="watchingSection" class="panel hidden">
       <div class="section-heading">
-
         <div>
-
-          <p class="kicker">
-            THE WINTER TEN
-          </p>
-
-          <h2>
-            Watch them in any order
-          </h2>
-
+          <p class="kicker">THE WINTER TEN</p>
+          <h2>Watch them in any order</h2>
         </div>
-
-
         <div class="progress-big">
-
-          <strong id="fullyWatchedCount">
-            0
-          </strong>
-
-          <span>
-            / 10 ready to discuss
-          </span>
-
+          <strong id="fullyWatchedCount">0</strong>
+          <span>/ 10 ready to discuss</span>
         </div>
-
       </div>
-
 
       <p class="section-note wide">
-
-        Tick a film after you've watched it.
-        When all four have watched the same film,
-        its scorecard and discussion area unlock.
-
+        Tick a film after you've watched it. When all four have watched the same film, its scorecard and discussion area unlock.
       </p>
 
-
-      <div
-        id="movieGrid"
-        class="movie-grid"
-      ></div>
-
+      <div id="movieGrid" class="movie-grid"></div>
     </section>
 
-
-
-    <!-- ======================================
-         RANKINGS
-         ====================================== -->
-
-    <section
-      id="finalTableSection"
-      class="panel hidden"
-    >
-
+    <section id="finalTableSection" class="panel hidden">
       <div class="section-heading compact">
-
         <div>
-
-          <p class="kicker">
-            SEASON TABLE
-          </p>
-
-          <h2>
-            How the films are doing
-          </h2>
-
+          <p class="kicker">SEASON TABLE</p>
+          <h2>How the films are doing</h2>
         </div>
-
       </div>
-
-
-      <div
-        id="rankingTable"
-        class="ranking-table"
-      ></div>
-
+      <div id="rankingTable" class="ranking-table"></div>
     </section>
-
-
-
-    <!-- ======================================
-         FOOTER
-         ====================================== -->
 
     <footer>
-
       <div>
-
-        <button
-          id="resetBtn"
-          class="text-button"
-          type="button"
-        >
-          Reset film club
-        </button>
-
-        <p>
-          Shared live between Steph, Elliot, Dan and Wendy.
-        </p>
-
+        <button id="resetBtn" class="text-button" type="button">Reset film club</button>
+        <p>Shared live between Steph, Elliot, Dan and Wendy.</p>
       </div>
-
-
       <p class="tmdb-credit">
-
         Movie data and images from
-
-        <a
-          href="https://www.themoviedb.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          TMDB
-        </a>.
-
-        This product uses the TMDB API but is not
-        endorsed or certified by TMDB.
-
+        <a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer">TMDB</a>.
+        This product uses the TMDB API but is not endorsed or certified by TMDB.
       </p>
-
     </footer>
-
   </main>
 
-
-
-  <!-- ========================================
-       NOMINATION CARD TEMPLATE
-       ======================================== -->
-
   <template id="nominationCardTemplate">
-
     <article class="person-card">
-
       <div class="person-title">
-
         <span class="person-dot"></span>
-
         <h3></h3>
-
       </div>
-
-
-
-      <!-- PICK ONE -->
 
       <div class="pick-block">
-
-        <label>
-          Pick 1
-        </label>
-
-
+        <label>Pick 1</label>
         <div class="movie-picker">
-
-          <input
-            class="movie-search-input"
-            type="search"
-            autocomplete="off"
-            placeholder="Search film title…"
-          />
-
-
-          <div
-            class="movie-search-results hidden"
-          ></div>
-
-
+          <input class="movie-search-input" type="search" autocomplete="off" placeholder="Search film title…" />
+          <div class="movie-search-results hidden"></div>
           <div class="chosen-movie hidden">
-
-            <img
-              class="chosen-poster hidden"
-              alt=""
-            />
-
-
-            <div class="chosen-no-poster hidden">
-              FILM
-            </div>
-
-
+            <img class="chosen-poster hidden" alt="" />
+            <div class="chosen-no-poster hidden">FILM</div>
             <div class="chosen-copy">
-
               <strong class="chosen-title"></strong>
-
               <span class="chosen-meta"></span>
-
             </div>
-
-
-            <button
-              class="change-movie secondary"
-              type="button"
-            >
-              Change
-            </button>
-
+            <button class="change-movie secondary" type="button">Change</button>
           </div>
-
         </div>
-
       </div>
-
-
-
-      <!-- PICK TWO -->
 
       <div class="pick-block">
-
-        <label>
-          Pick 2
-        </label>
-
-
+        <label>Pick 2</label>
         <div class="movie-picker">
-
-          <input
-            class="movie-search-input"
-            type="search"
-            autocomplete="off"
-            placeholder="Search film title…"
-          />
-
-
-          <div
-            class="movie-search-results hidden"
-          ></div>
-
-
+          <input class="movie-search-input" type="search" autocomplete="off" placeholder="Search film title…" />
+          <div class="movie-search-results hidden"></div>
           <div class="chosen-movie hidden">
-
-            <img
-              class="chosen-poster hidden"
-              alt=""
-            />
-
-
-            <div class="chosen-no-poster hidden">
-              FILM
-            </div>
-
-
+            <img class="chosen-poster hidden" alt="" />
+            <div class="chosen-no-poster hidden">FILM</div>
             <div class="chosen-copy">
-
               <strong class="chosen-title"></strong>
-
               <span class="chosen-meta"></span>
-
             </div>
-
-
-            <button
-              class="change-movie secondary"
-              type="button"
-            >
-              Change
-            </button>
-
+            <button class="change-movie secondary" type="button">Change</button>
           </div>
-
         </div>
-
       </div>
 
-
-      <button
-        class="save-picks secondary"
-        type="button"
-      >
-        Save picks
-      </button>
-
+      <button class="save-picks secondary" type="button">Save picks</button>
     </article>
-
   </template>
-
-
-
-  <!-- ========================================
-       MOVIE CARD TEMPLATE
-       ======================================== -->
 
   <template id="movieCardTemplate">
-
     <article class="movie-card">
-
-
       <div class="poster">
-
-        <img
-          class="poster-image hidden"
-          alt=""
-        />
-
-
+        <img class="poster-image hidden" alt="" />
         <span class="movie-number"></span>
-
-
-        <div class="poster-mark">
-          WFC
-        </div>
-
+        <div class="poster-mark">WFC</div>
       </div>
-
 
       <div class="movie-body">
-
         <div class="movie-meta">
-
           <span class="source-pill"></span>
-
           <span class="watched-count"></span>
-
         </div>
-
 
         <h3 class="movie-title"></h3>
-
-
         <p class="movie-facts"></p>
-
-
         <p class="picked-by"></p>
-
-
         <div class="watchers"></div>
 
-
-        <button
-          class="watched-toggle secondary"
-          type="button"
-        ></button>
-
+        <button class="watched-toggle secondary" type="button"></button>
 
         <div class="review-lock">
-
-          <strong>
-            Discussion locked
-          </strong>
-
-          <span>
-            Waiting for everyone to watch it.
-          </span>
-
+          <strong>Discussion locked</strong>
+          <span>Waiting for everyone to watch it.</span>
         </div>
-
 
         <div class="review-panel hidden">
-
-          <div class="unlock-banner">
-            4/4 watched · discussion unlocked
-          </div>
-
+          <div class="unlock-banner">4/4 watched · discussion unlocked</div>
 
           <div class="score-row">
-
-            <label>
-              My score
-            </label>
-
-
+            <label>My score</label>
             <select class="score-select">
-
               <option value="">—</option>
-
-              <option>10</option>
-              <option>9</option>
-              <option>8</option>
-              <option>7</option>
-              <option>6</option>
-              <option>5</option>
-              <option>4</option>
-              <option>3</option>
-              <option>2</option>
-              <option>1</option>
-
+              <option>10</option><option>9</option><option>8</option><option>7</option><option>6</option>
+              <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
             </select>
-
           </div>
 
-
           <label class="review-label">
-
             My quick review
-
-            <textarea
-              class="review-text"
-              maxlength="240"
-              placeholder="Worth the hype? Best bit? Never again?"
-            ></textarea>
-
+            <textarea class="review-text" maxlength="240" placeholder="Worth the hype? Best bit? Never again?"></textarea>
           </label>
 
-
-          <button
-            class="save-review primary small"
-            type="button"
-          >
-            Save my review
-          </button>
-
-
+          <button class="save-review primary small" type="button">Save my review</button>
           <div class="group-score"></div>
-
           <div class="review-list"></div>
-
         </div>
-
       </div>
-
     </article>
-
   </template>
 
-
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
-  <script src="enhancements.js"></script>
-  <script src="selection-synopsis.js?v=20260914-1658"></script>
-  <script src="synopsis.js?v=20260914-1658"></script>
-
+  <script src="bidding-rules.js?v=20260914-1715"></script>
+  <script src="enhancements.js?v=20260914-1715"></script>
+  <script src="selection-synopsis.js?v=20260914-1715"></script>
+  <script src="synopsis.js?v=20260914-1715"></script>
+  <script src="synopsis-fuller.js?v=20260914-1715"></script>
+  <script src="club-polish.js?v=20260914-1715"></script>
 </body>
 </html>
