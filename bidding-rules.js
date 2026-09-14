@@ -136,3 +136,8 @@
     renderBidding();
   }
 })();
+
+// Keep the overall Watch progress focused on completed films, not 40 individual ticks.
+const progressTenScript = document.createElement("script");
+progressTenScript.src = "progress-ten.js?v=20260914-1725";
+document.head.appendChild(progressTenScript);
