@@ -1,6 +1,6 @@
 // =====================================================
 // WINTER FILM CLUB — MOVIE SYNOPSES
-// Adds a short TMDB synopsis to each film in the final ten.
+// Adds a fuller TMDB synopsis to each film in the final ten.
 // =====================================================
 
 (() => {
@@ -23,13 +23,13 @@
       text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
 
     let summary = sentences
-      .slice(0, 2)
+      .slice(0, 3)
       .join(" ")
       .trim();
 
-    if (summary.length > 280) {
+    if (summary.length > 420) {
       summary = summary
-        .slice(0, 277)
+        .slice(0, 417)
         .replace(/\s+\S*$/, "")
         .trim() + "…";
     }
