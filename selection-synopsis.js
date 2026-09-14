@@ -5,6 +5,12 @@
 // =====================================================
 
 (() => {
+  if (window.__WFC_SELECTION_SYNOPSIS_LOADED__) {
+    return;
+  }
+
+  window.__WFC_SELECTION_SYNOPSIS_LOADED__ = true;
+
   const nominationGrid = document.getElementById("nominationGrid");
   const wildcardPicker = document.getElementById("wildcardPicker");
   const wildcardList = document.getElementById("wildcardList");
@@ -123,12 +129,19 @@
       return;
     }
 
+    // Avoid repeatedly rebuilding the same block. This also prevents
+    // our MutationObservers from triggering themselves in a loop.
+    if (block?.dataset.synopsis === synopsis) {
+      return;
+    }
+
     if (!block) {
       block = document.createElement("div");
       block.className = className;
       container.appendChild(block);
     }
 
+    block.dataset.synopsis = synopsis;
     block.innerHTML = "";
 
     const label = document.createElement("span");
