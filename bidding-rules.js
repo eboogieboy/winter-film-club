@@ -1,7 +1,11 @@
-// Load the movie synopsis enhancement after the core app is available.
+// Load the movie synopsis enhancements after the core app is available.
 const synopsisScript = document.createElement("script");
 synopsisScript.src = "synopsis.js";
 document.head.appendChild(synopsisScript);
+
+const selectionSynopsisScript = document.createElement("script");
+selectionSynopsisScript.src = "selection-synopsis.js";
+document.head.appendChild(selectionSynopsisScript);
 
 // =====================================================
 // WINTER FILM CLUB — BIDDING RULES
