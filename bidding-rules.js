@@ -1,3 +1,8 @@
+// Load the movie synopsis enhancement after the core app is available.
+const synopsisScript = document.createElement("script");
+synopsisScript.src = "synopsis.js";
+document.head.appendChild(synopsisScript);
+
 // =====================================================
 // WINTER FILM CLUB — BIDDING RULES
 // You cannot spend tokens on a wildcard you proposed.
