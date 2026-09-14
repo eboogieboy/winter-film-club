@@ -1,0 +1,429 @@
+/* =====================================================
+   WINTER FILM CLUB — FINAL POLISH
+   Secret bidding, overall progress, synopsis controls
+   and end-of-season finale.
+   ===================================================== */
+
+/* ---------- CLUB PROGRESS ---------- */
+
+.club-progress-overview {
+  width: min(1040px, 100%);
+  margin: 14px auto 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgba(255,255,255,.055);
+}
+
+.club-progress-item {
+  min-width: 0;
+  padding: 10px 12px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,.1);
+}
+
+.club-progress-item:last-child {
+  border-right: 0;
+}
+
+.club-progress-item span,
+.club-progress-item strong {
+  display: block;
+}
+
+.club-progress-item span {
+  color: rgba(255,255,255,.62);
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.club-progress-item strong {
+  margin-top: 3px;
+  color: white;
+  font-size: .85rem;
+  line-height: 1.15;
+}
+
+.club-progress-item.complete strong {
+  color: #b9d3bf;
+}
+
+/* ---------- SECRET BIDDING ---------- */
+
+.secret-bid-status {
+  margin: 0 0 17px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #f6f3ec;
+}
+
+.secret-bid-status strong,
+.secret-bid-status span {
+  display: block;
+}
+
+.secret-bid-status strong {
+  color: var(--ink);
+  font-size: .88rem;
+}
+
+.secret-bid-status span {
+  margin-top: 2px;
+  color: #73808e;
+  font-size: .76rem;
+  line-height: 1.35;
+}
+
+.secret-bid-lock {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #e8edf1;
+  color: #596a79;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.secret-bid-lock.ready {
+  background: #e2ece4;
+  color: #3f6247;
+}
+
+.bid-total.secret-total {
+  color: #8a949f;
+  font-style: italic;
+}
+
+#biddingGrid.secret-voting .bid-card.top-two {
+  border-color: var(--line) !important;
+  box-shadow: 0 5px 16px rgba(19,34,56,.04) !important;
+}
+
+#biddingGrid.voting-revealed .bid-controls button:disabled {
+  opacity: .42;
+}
+
+.reveal-panel {
+  margin: 18px 0 6px;
+  padding: 17px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #132238, #30445f);
+  color: white;
+  box-shadow: 0 14px 34px rgba(19,34,56,.16);
+}
+
+.reveal-panel-header {
+  margin-bottom: 13px;
+  text-align: center;
+}
+
+.reveal-panel-header span,
+.reveal-panel-header strong,
+.reveal-panel-header small {
+  display: block;
+}
+
+.reveal-panel-header span {
+  color: #b9cbd7;
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.reveal-panel-header strong {
+  margin-top: 4px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.55rem;
+  font-weight: 500;
+}
+
+.reveal-panel-header small {
+  margin-top: 4px;
+  color: #d4dde5;
+  font-size: .75rem;
+}
+
+.reveal-winners {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.reveal-winner {
+  display: grid;
+  grid-template-columns: 72px minmax(0,1fr);
+  gap: 11px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  background: rgba(255,255,255,.07);
+}
+
+.reveal-winner img,
+.reveal-winner-placeholder {
+  width: 72px;
+  height: 106px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.reveal-winner-placeholder {
+  display: grid;
+  place-items: center;
+  background: #23364f;
+  color: #d3dce4;
+  font-size: .62rem;
+  letter-spacing: .09em;
+}
+
+.reveal-winner-copy span,
+.reveal-winner-copy strong,
+.reveal-winner-copy small {
+  display: block;
+}
+
+.reveal-winner-copy span {
+  margin-bottom: 3px;
+  color: #b9cbd7;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.reveal-winner-copy strong {
+  font-size: 1rem;
+  line-height: 1.15;
+}
+
+.reveal-winner-copy small {
+  margin-top: 5px;
+  color: #d6dee5;
+  font-size: .75rem;
+}
+
+/* ---------- SYNOPSIS MORE / LESS ---------- */
+
+.synopsis-toggle {
+  margin-top: 5px;
+  padding: 0;
+  min-height: 30px;
+  border: 0;
+  background: transparent;
+  color: var(--accent-dark, #8f4b32);
+  font-size: .72rem;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (min-width: 761px) {
+  .synopsis-toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  body .synopsis-collapsible:not(.is-expanded) > p {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 4 !important;
+    overflow: hidden !important;
+  }
+
+  body .synopsis-collapsible.is-expanded > p {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    overflow: visible !important;
+  }
+}
+
+/* ---------- SEASON FINALE ---------- */
+
+.season-finale {
+  margin: 0 0 24px;
+  padding: 20px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #132238, #30445f);
+  color: white;
+  box-shadow: 0 14px 36px rgba(19,34,56,.16);
+}
+
+.season-finale-heading {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.season-finale-heading span,
+.season-finale-heading strong,
+.season-finale-heading small {
+  display: block;
+}
+
+.season-finale-heading span {
+  color: #b9cbd7;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.season-finale-heading strong {
+  margin-top: 4px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.7rem;
+  font-weight: 500;
+}
+
+.season-finale-heading small {
+  margin-top: 5px;
+  color: #d0dae3;
+  font-size: .78rem;
+}
+
+.finale-podium {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.finale-place,
+.finale-stat {
+  padding: 13px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 14px;
+  background: rgba(255,255,255,.07);
+}
+
+.finale-place span,
+.finale-place strong,
+.finale-place small,
+.finale-stat span,
+.finale-stat strong,
+.finale-stat small {
+  display: block;
+}
+
+.finale-place span,
+.finale-stat span {
+  color: #b9cbd7;
+  font-size: .61rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.finale-place strong,
+.finale-stat strong {
+  margin-top: 4px;
+  line-height: 1.15;
+}
+
+.finale-place.winner strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.34rem;
+  font-weight: 500;
+}
+
+.finale-place small,
+.finale-stat small {
+  margin-top: 4px;
+  color: #d4dde5;
+  font-size: .73rem;
+}
+
+.finale-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 760px) {
+  .club-progress-overview {
+    width: calc(100% + 32px);
+    margin: 0 -16px;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-radius: 0;
+    background: rgba(255,255,255,.045);
+  }
+
+  .club-progress-item {
+    padding: 9px 3px 10px;
+  }
+
+  .club-progress-item span {
+    font-size: .53rem;
+    letter-spacing: .05em;
+  }
+
+  .club-progress-item strong {
+    font-size: .72rem;
+  }
+
+  .secret-bid-status {
+    align-items: flex-start;
+    padding: 11px 12px;
+  }
+
+  .secret-bid-lock {
+    font-size: .58rem;
+  }
+
+  .reveal-panel {
+    padding: 14px;
+  }
+
+  .reveal-winners {
+    grid-template-columns: 1fr;
+  }
+
+  .reveal-winner {
+    grid-template-columns: 64px minmax(0,1fr);
+  }
+
+  .reveal-winner img,
+  .reveal-winner-placeholder {
+    width: 64px;
+    height: 94px;
+  }
+
+  .season-finale {
+    padding: 15px;
+    border-radius: 17px;
+  }
+
+  .season-finale-heading strong {
+    font-size: 1.45rem;
+  }
+
+  .finale-podium,
+  .finale-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .club-progress-overview {
+    width: calc(100% + 26px);
+    margin-left: -13px;
+    margin-right: -13px;
+  }
+}
