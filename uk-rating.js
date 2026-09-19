@@ -41,7 +41,7 @@
   }
 
   function cacheKey(movie) {
-    return `wfc-uk-rating-v4:${movie.tmdbId || movie.id || movie.title || ""}`;
+    return `wfc-uk-rating-v5:${movie.tmdbId || movie.id || movie.title || ""}`;
   }
 
   function readCache(movie) {
@@ -215,6 +215,53 @@
     }
   }
 
+  async function tryWikidataBbfc(movie) {
+    if (!movie?.tmdbId) return "";
+
+    const qidToRating = new Map([
+      ["Q23301853", "U"],
+      ["Q23301854", "PG"],
+      ["Q23301855", "12A"],
+      ["Q23301856", "12"],
+      ["Q4550895", "15"],
+      ["Q4557532", "18"],
+      ["Q7274429", "R18"]
+    ]);
+
+    try {
+      const tmdbId = String(movie.tmdbId).replace(/[^0-9]/g, "");
+      if (!tmdbId) return "";
+
+      const query = `
+        SELECT ?rating WHERE {
+          ?film wdt:P4947 "${tmdbId}" ;
+                wdt:P2629 ?rating .
+        }
+        LIMIT 5
+      `;
+
+      const url =
+        "https://query.wikidata.org/sparql?format=json&query=" +
+        encodeURIComponent(query);
+
+      const response = await fetch(url, {
+        headers: { Accept: "application/sparql-results+json" }
+      });
+
+      if (!response.ok) return "";
+
+      const data = await response.json();
+      const ratings = (data?.results?.bindings || [])
+        .map(row => String(row?.rating?.value || "").split("/").pop())
+        .map(qid => qidToRating.get(qid) || "")
+        .filter(Boolean);
+
+      return pickBestUkRating(ratings);
+    } catch {
+      return "";
+    }
+  }
+
   async function getRating(movie) {
     const cached = readCache(movie);
     if (cached !== null) return cached;
@@ -245,10 +292,14 @@
       rating = await tryPublicTmdbReleasePage(movie);
     }
 
-    // If TMDB's own GB data is incomplete, use IMDb's UK certification
-    // section as a generic fallback. Where several historic UK versions are
-    // listed we use the strongest certification, which avoids choosing an
-    // old cut-down cinema certificate for an uncut modern version.
+    // Wikidata has a dedicated BBFC-rating property and is particularly
+    // useful for older/cult titles where TMDB release data is incomplete.
+    if (!rating) {
+      rating = await tryWikidataBbfc(movie);
+    }
+
+    // If the structured sources are still incomplete, try IMDb's UK
+    // certification section as another generic fallback.
     if (!rating) {
       rating = await tryImdbUkCertification(movie);
     }
