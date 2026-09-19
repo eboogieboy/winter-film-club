@@ -146,7 +146,7 @@
       const movie = movies[index];
       if (!movie) return;
 
-      card.querySelector(".uk-cert-badge")?.remove();
+      if (card.querySelector(".movie-meta .uk-cert-badge")) return;
 
       const rating = await getRating(movie);
       if (!rating || !card.isConnected) return;
@@ -179,24 +179,28 @@
     return movies;
   }
 
+  function findKnownMovie(known, title, metaText = "") {
+    const cleanTitle = String(title || "").trim().toLowerCase();
+    if (!cleanTitle) return null;
+
+    return known.find(item =>
+      String(item.title || "").trim().toLowerCase() === cleanTitle &&
+      (!item.year || !metaText || String(metaText).includes(String(item.year)))
+    ) || known.find(item =>
+      String(item.title || "").trim().toLowerCase() === cleanTitle
+    ) || null;
+  }
+
   async function decorateChosenMovies() {
     const known = allSelectedMovies();
 
     const chosen = [...document.querySelectorAll(".chosen-movie:not(.hidden)")];
     await Promise.all(chosen.map(async node => {
-      node.querySelector(".uk-cert-badge")?.remove();
+      if (node.querySelector(".uk-cert-badge")) return;
 
       const title = node.querySelector(".chosen-title")?.textContent?.trim();
       const yearText = node.querySelector(".chosen-meta")?.textContent || "";
-      if (!title) return;
-
-      const movie = known.find(item =>
-        String(item.title || "").trim().toLowerCase() === title.toLowerCase() &&
-        (!item.year || !yearText || yearText.includes(String(item.year)))
-      ) || known.find(item =>
-        String(item.title || "").trim().toLowerCase() === title.toLowerCase()
-      );
-
+      const movie = findKnownMovie(known, title, yearText);
       if (!movie) return;
 
       const rating = await getRating(movie);
@@ -209,10 +213,64 @@
     }));
   }
 
+  async function decorateCompactMovieRows() {
+    const known = allSelectedMovies();
+
+    const configs = [
+      {
+        selector: ".other-pick-row",
+        title: ".other-pick-copy > strong",
+        meta: ".other-pick-copy > small",
+        host: ".other-pick-copy > strong"
+      },
+      {
+        selector: ".wildcard-chip",
+        title: ".wildcard-copy > strong",
+        meta: ".wildcard-copy > span",
+        host: ".wildcard-copy > strong"
+      },
+      {
+        selector: ".bid-card",
+        title: ".bid-copy h3",
+        meta: ".bid-copy .bid-meta",
+        host: ".bid-copy h3"
+      }
+    ];
+
+    const jobs = [];
+
+    configs.forEach(config => {
+      document.querySelectorAll(config.selector).forEach(node => {
+        if (node.querySelector(".uk-cert-badge")) return;
+
+        const titleNode = node.querySelector(config.title);
+        const title = titleNode?.textContent?.trim() || "";
+        const meta = node.querySelector(config.meta)?.textContent || "";
+        const movie = findKnownMovie(known, title, meta);
+        if (!movie) return;
+
+        jobs.push((async () => {
+          const rating = await getRating(movie);
+          if (!rating || !node.isConnected || node.querySelector(".uk-cert-badge")) return;
+
+          const host = node.querySelector(config.host);
+          if (host) {
+            const badge = makeBadge(rating);
+            badge.classList.add("compact");
+            host.appendChild(badge);
+          }
+        })());
+      });
+    });
+
+    await Promise.all(jobs);
+  }
+
   async function decorate() {
     await Promise.all([
       decorateFinalCards(),
-      decorateChosenMovies()
+      decorateChosenMovies(),
+      decorateCompactMovieRows()
     ]);
   }
 
@@ -262,6 +320,22 @@
     .chosen-copy .uk-cert-badge {
       margin-top: 6px;
       margin-left: 0;
+    }
+
+    .uk-cert-badge.compact {
+      width: 25px;
+      height: 25px;
+      margin: 0 0 0 7px;
+      font-size: .58rem;
+      vertical-align: middle;
+    }
+
+    .other-pick-copy > strong,
+    .wildcard-copy > strong,
+    .bid-copy h3 {
+      display: flex;
+      align-items: center;
+      gap: 2px;
     }
 
     @media (max-width: 760px) {
