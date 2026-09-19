@@ -11,8 +11,30 @@
   const memory = new Map();
   let queued = false;
 
+  // Verified UK fallback classifications for films currently in the club.
+  // These are only used when TMDB does not return a usable GB certification.
+  // Keep this table deliberately small and factual rather than guessing.
+  const KNOWN_BBFC_FALLBACKS = new Map([
+    ["some like it hot|1959", "U"],
+    ["rogue one: a star wars story|2016", "12A"]
+  ]);
+
+  function movieFallbackKey(movie) {
+    return `${String(movie?.title || "").trim().toLowerCase()}|${String(movie?.year || "").trim()}`;
+  }
+
+  function knownBbfcFallback(movie) {
+    return KNOWN_BBFC_FALLBACKS.get(movieFallbackKey(movie)) || "";
+  }
+
+  function shouldShowTbc(movie) {
+    const year = Number(movie?.year || 0);
+    const currentYear = new Date().getFullYear();
+    return !!year && year >= currentYear;
+  }
+
   function cacheKey(movie) {
-    return `wfc-uk-rating-v2:${movie.tmdbId || movie.id || movie.title || ""}`;
+    return `wfc-uk-rating-v3:${movie.tmdbId || movie.id || movie.title || ""}`;
   }
 
   function readCache(movie) {
@@ -41,7 +63,7 @@
 
   function normalise(value) {
     const cert = String(value || "").trim().toUpperCase().replace(/\s+/g, "");
-    const supported = new Set(["U", "PG", "12", "12A", "15", "18", "R18"]);
+    const supported = new Set(["U", "PG", "12", "12A", "15", "18", "R18", "TBC"]);
     return supported.has(cert) ? cert : "";
   }
 
@@ -155,6 +177,18 @@
       rating = await tryPublicTmdbReleasePage(movie);
     }
 
+    // UK-specific fallback for titles whose TMDB record does not expose
+    // a usable GB certification. These values are verified separately.
+    if (!rating) {
+      rating = knownBbfcFallback(movie);
+    }
+
+    // Only genuinely forthcoming/current-year films with no classification
+    // get TBC. Older films remain blank rather than receiving a guessed rating.
+    if (!rating && shouldShowTbc(movie)) {
+      rating = "TBC";
+    }
+
     writeCache(movie, rating);
     return rating;
   }
@@ -166,6 +200,7 @@
     if (rating === "15") return "fifteen";
     if (rating === "18") return "eighteen";
     if (rating === "R18") return "r18";
+    if (rating === "TBC") return "tbc";
     return "unknown";
   }
 
@@ -356,6 +391,15 @@
     .uk-cert-badge.fifteen { background: #c83d58; }
     .uk-cert-badge.eighteen { background: #b3262e; }
     .uk-cert-badge.r18 { background: #242424; }
+    .uk-cert-badge.tbc {
+      width: auto;
+      min-width: 34px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: #7b8794;
+      font-size: .56rem;
+      letter-spacing: .03em;
+    }
 
     .chosen-copy .uk-cert-badge {
       margin-top: 6px;
