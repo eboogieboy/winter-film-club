@@ -12,7 +12,7 @@
   let queued = false;
 
   function cacheKey(movie) {
-    return `wfc-uk-rating-v1:${movie.tmdbId || movie.id || movie.title || ""}`;
+    return `wfc-uk-rating-v2:${movie.tmdbId || movie.id || movie.title || ""}`;
   }
 
   function readCache(movie) {
@@ -90,13 +90,47 @@
     }
   }
 
+  function parseUkRatingFromReleasePage(text) {
+    const source = String(text || "");
+    const match = source.match(/(?:Image\s+)?United Kingdom/i);
+    if (!match) return "";
+
+    const start = match.index ?? 0;
+    let section = source.slice(start, start + 2500);
+
+    const nextCountry = section.slice(30).search(/\n##\s+(?:Image\s+)?[A-Z][^\n]+/);
+    if (nextCountry >= 0) {
+      section = section.slice(0, nextCountry + 30);
+    }
+
+    const rows = [...section.matchAll(/\|\s*(U|PG|12A?|15|18|R18)\s*\|/gi)];
+    return normalise(rows[0]?.[1] || "");
+  }
+
+  async function tryPublicTmdbReleasePage(movie) {
+    if (!movie?.tmdbId) return "";
+
+    try {
+      // Jina Reader fetches TMDB's public release page without exposing the
+      // private TMDB API key. Only the public TMDB movie URL is sent.
+      const target = `https://www.themoviedb.org/movie/${encodeURIComponent(movie.tmdbId)}/releases`;
+      const response = await fetch(`https://r.jina.ai/${target}`, {
+        headers: { Accept: "text/plain" }
+      });
+
+      if (!response.ok) return "";
+      return parseUkRatingFromReleasePage(await response.text());
+    } catch {
+      return "";
+    }
+  }
+
   async function getRating(movie) {
     const cached = readCache(movie);
     if (cached !== null) return cached;
     if (!movie?.tmdbId) return "";
 
-    // The existing proxy already supports movie details. Ask it to append
-    // release dates first, then try common dedicated action names.
+    // First use our existing Supabase/TMDB proxy.
     let rating = await tryProxy({
       action: "details",
       id: movie.tmdbId,
@@ -113,6 +147,12 @@
 
     if (!rating) {
       rating = await tryProxy({ action: "releases", id: movie.tmdbId });
+    }
+
+    // The current proxy deployment may not forward release_dates. In that
+    // case read the same certification from TMDB's public Releases page.
+    if (!rating) {
+      rating = await tryPublicTmdbReleasePage(movie);
     }
 
     writeCache(movie, rating);
