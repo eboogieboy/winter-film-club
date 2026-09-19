@@ -10,6 +10,13 @@
 
   const tidy = value => String(value || "").replace(/\s+/g, " ").trim();
 
+  function textWithoutRatingBadge(node) {
+    if (!node) return "";
+    const clone = node.cloneNode(true);
+    clone.querySelectorAll?.(".uk-cert-badge").forEach(badge => badge.remove());
+    return tidy(clone.textContent);
+  }
+
   function knownMovies() {
     const movies = [];
 
@@ -64,13 +71,13 @@
       const saved = state?.nominations?.[person] || [];
 
       card.querySelectorAll(".pick-block").forEach((block, index) => {
-        const title = tidy(block.querySelector(".chosen-title")?.textContent);
+        const title = textWithoutRatingBadge(block.querySelector(".chosen-title"));
         const movie = normalizeMovie(saved[index]) || findMovie(title);
         replaceSynopsis(block.querySelector(".selection-synopsis"), movie);
       });
 
       card.querySelectorAll(".other-pick-row").forEach(row => {
-        const title = tidy(row.querySelector(".other-pick-copy strong")?.textContent);
+        const title = textWithoutRatingBadge(row.querySelector(".other-pick-copy strong"));
         const movie = saved.map(normalizeMovie).find(item =>
           item && tidy(item.title).toLowerCase() === title.toLowerCase()
         ) || findMovie(title);
@@ -81,7 +88,7 @@
     // Wildcard currently being selected.
     const wildcardPicker = document.getElementById("wildcardPicker");
     if (wildcardPicker) {
-      const title = tidy(wildcardPicker.querySelector(".chosen-title")?.textContent);
+      const title = textWithoutRatingBadge(wildcardPicker.querySelector(".chosen-title"));
       let movie = null;
       if (typeof pendingWildcardMovie !== "undefined" && pendingWildcardMovie) {
         movie = normalizeMovie(pendingWildcardMovie);
@@ -92,7 +99,7 @@
 
     // Added wildcard cards.
     document.querySelectorAll("#wildcardList .wildcard-chip").forEach(chip => {
-      const title = tidy(chip.querySelector(".wildcard-copy strong")?.textContent);
+      const title = textWithoutRatingBadge(chip.querySelector(".wildcard-copy strong"));
       const movie = (state?.wildcards || [])
         .map(wildcardMovie)
         .find(item => item && tidy(item.title).toLowerCase() === title.toLowerCase())
@@ -102,7 +109,7 @@
 
     // Bidding cards.
     document.querySelectorAll("#biddingGrid .bid-card").forEach(card => {
-      const title = tidy(card.querySelector(".bid-copy h3")?.textContent);
+      const title = textWithoutRatingBadge(card.querySelector(".bid-copy h3"));
       const movie = (state?.wildcards || [])
         .map(wildcardMovie)
         .find(item => item && tidy(item.title).toLowerCase() === title.toLowerCase())
