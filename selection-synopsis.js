@@ -22,6 +22,13 @@
 
   const recentMovies = new Map();
 
+  function textWithoutRatingBadge(node) {
+    if (!node) return "";
+    const clone = node.cloneNode(true);
+    clone.querySelectorAll?.(".uk-cert-badge").forEach(badge => badge.remove());
+    return String(clone.textContent || "").trim();
+  }
+
   function movieKey(movie) {
     if (!movie) return "";
     if (movie.tmdbId) return `id:${movie.tmdbId}`;
@@ -164,7 +171,7 @@
       [...card.querySelectorAll(".pick-block")].forEach((block, index) => {
         const picker = block.querySelector(".movie-picker");
         const chosen = picker?.querySelector(".chosen-movie");
-        const title = chosen?.querySelector(".chosen-title")?.textContent?.trim() || "";
+        const title = textWithoutRatingBadge(chosen?.querySelector(".chosen-title"));
 
         let movie = normalizeMovie(savedPicks[index]);
 
@@ -178,7 +185,7 @@
       // The compact read-only summaries for everybody else's picks.
       const summaryRows = [...card.querySelectorAll(".other-pick-row")];
       summaryRows.forEach(row => {
-        const title = row.querySelector(".other-pick-copy strong")?.textContent?.trim() || "";
+        const title = textWithoutRatingBadge(row.querySelector(".other-pick-copy strong"));
         const movie = savedPicks
           .map(normalizeMovie)
           .find(item => item && item.title === title) || findMovie(title);
@@ -191,7 +198,7 @@
 
   function decorateWildcardPicker() {
     const chosen = wildcardPicker.querySelector(".chosen-movie");
-    const title = chosen?.querySelector(".chosen-title")?.textContent?.trim() || "";
+    const title = textWithoutRatingBadge(chosen?.querySelector(".chosen-title"));
 
     let movie = null;
 
@@ -210,7 +217,7 @@
     const chips = [...wildcardList.querySelectorAll(":scope > .wildcard-chip")];
 
     chips.forEach(chip => {
-      const title = chip.querySelector(".wildcard-copy strong")?.textContent?.trim() || "";
+      const title = textWithoutRatingBadge(chip.querySelector(".wildcard-copy strong"));
       const movie = (state?.wildcards || [])
         .map(wildcardMovie)
         .find(item => item && item.title === title) || findMovie(title);
@@ -224,7 +231,7 @@
     const cards = [...biddingGrid.querySelectorAll(":scope > .bid-card")];
 
     cards.forEach(card => {
-      const title = card.querySelector(".bid-copy h3")?.textContent?.trim() || "";
+      const title = textWithoutRatingBadge(card.querySelector(".bid-copy h3"));
       const movie = (state?.wildcards || [])
         .map(wildcardMovie)
         .find(item => item && item.title === title) || findMovie(title);
