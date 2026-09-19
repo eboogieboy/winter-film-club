@@ -16,7 +16,14 @@
   // Keep this table deliberately small and factual rather than guessing.
   const KNOWN_BBFC_FALLBACKS = new Map([
     ["some like it hot|1959", "U"],
-    ["rogue one: a star wars story|2016", "12A"]
+    ["the good, the bad and the ugly|1966", "18"],
+    ["pirates of the caribbean: the curse of the black pearl|2003", "12A"],
+    ["rogue one: a star wars story|2016", "12A"],
+    ["the wave|2015", "15"],
+    ["steel magnolias|1989", "PG"],
+    ["disturbia|2007", "15"],
+    ["jaws: the revenge|1987", "15"],
+    ["jaws - the revenge|1987", "15"]
   ]);
 
   function movieFallbackKey(movie) {
@@ -34,7 +41,7 @@
   }
 
   function cacheKey(movie) {
-    return `wfc-uk-rating-v3:${movie.tmdbId || movie.id || movie.title || ""}`;
+    return `wfc-uk-rating-v4:${movie.tmdbId || movie.id || movie.title || ""}`;
   }
 
   function readCache(movie) {
@@ -133,8 +140,6 @@
     if (!movie?.tmdbId) return "";
 
     try {
-      // Jina Reader fetches TMDB's public release page without exposing the
-      // private TMDB API key. Only the public TMDB movie URL is sent.
       const target = `https://www.themoviedb.org/movie/${encodeURIComponent(movie.tmdbId)}/releases`;
       const response = await fetch(`https://r.jina.ai/${target}`, {
         headers: { Accept: "text/plain" }
@@ -142,6 +147,69 @@
 
       if (!response.ok) return "";
       return parseUkRatingFromReleasePage(await response.text());
+    } catch {
+      return "";
+    }
+  }
+
+  function pickBestUkRating(values) {
+    const order = new Map([
+      ["U", 1],
+      ["PG", 2],
+      ["12", 3],
+      ["12A", 4],
+      ["15", 5],
+      ["18", 6],
+      ["R18", 7]
+    ]);
+
+    return values
+      .map(normalise)
+      .filter(Boolean)
+      .sort((a, b) => (order.get(b) || 0) - (order.get(a) || 0))[0] || "";
+  }
+
+  function parseImdbUkCertification(text) {
+    const source = String(text || "");
+    const match = source.match(/United Kingdom/i);
+    if (!match) return "";
+
+    const start = match.index ?? 0;
+    let section = source.slice(start, start + 1800);
+
+    const nextCountry = section.slice(30).search(/\n\s*[*-]\s+[A-Z][A-Za-z ]+\n|\n###\s+[A-Z][A-Za-z ]+/);
+    if (nextCountry >= 0) {
+      section = section.slice(0, nextCountry + 30);
+    }
+
+    const values = [];
+
+    for (const m of section.matchAll(/(?:^|\s)(U|PG|12A?|15|18|R18)(?=\s|$|[,.])/gim)) {
+      values.push(m[1]);
+    }
+
+    return pickBestUkRating(values);
+  }
+
+  async function tryImdbUkCertification(movie) {
+    if (!movie?.tmdbId) return "";
+
+    try {
+      const details = await callTmdbProxy({
+        action: "details",
+        id: movie.tmdbId
+      });
+
+      const imdbId = String(details?.imdb_id || "").trim();
+      if (!/^tt\d+$/.test(imdbId)) return "";
+
+      const target = `https://www.imdb.com/title/${imdbId}/parentalguide/`;
+      const response = await fetch(`https://r.jina.ai/${target}`, {
+        headers: { Accept: "text/plain" }
+      });
+
+      if (!response.ok) return "";
+      return parseImdbUkCertification(await response.text());
     } catch {
       return "";
     }
@@ -177,8 +245,15 @@
       rating = await tryPublicTmdbReleasePage(movie);
     }
 
-    // UK-specific fallback for titles whose TMDB record does not expose
-    // a usable GB certification. These values are verified separately.
+    // If TMDB's own GB data is incomplete, use IMDb's UK certification
+    // section as a generic fallback. Where several historic UK versions are
+    // listed we use the strongest certification, which avoids choosing an
+    // old cut-down cinema certificate for an uncut modern version.
+    if (!rating) {
+      rating = await tryImdbUkCertification(movie);
+    }
+
+    // Known BBFC fallbacks cover titles where public datasets are patchy.
     if (!rating) {
       rating = knownBbfcFallback(movie);
     }
@@ -281,9 +356,11 @@
       const rating = await getRating(movie);
       if (!rating || !node.isConnected) return;
 
-      const copy = node.querySelector(".chosen-copy");
-      if (copy && !copy.querySelector(".uk-cert-badge")) {
-        copy.appendChild(makeBadge(rating));
+      const titleHost = node.querySelector(".chosen-title");
+      if (titleHost && !node.querySelector(".uk-cert-badge")) {
+        const badge = makeBadge(rating);
+        badge.classList.add("compact");
+        titleHost.appendChild(badge);
       }
     }));
   }
@@ -401,25 +478,40 @@
       letter-spacing: .03em;
     }
 
-    .chosen-copy .uk-cert-badge {
-      margin-top: 6px;
-      margin-left: 0;
-    }
-
     .uk-cert-badge.compact {
+      display: inline-flex;
       width: 25px;
       height: 25px;
+      min-width: 25px;
       margin: 0 0 0 7px;
+      padding: 0;
+      border-radius: 50%;
+      color: #fff;
       font-size: .58rem;
       vertical-align: middle;
     }
 
+    .uk-cert-badge.compact.pg {
+      color: #17202a;
+    }
+
+    .uk-cert-badge.compact.tbc {
+      width: auto;
+      min-width: 38px;
+      padding: 0 7px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: .54rem;
+    }
+
+    .chosen-title,
     .other-pick-copy > strong,
     .wildcard-copy > strong,
     .bid-copy h3 {
-      display: flex;
+      display: flex !important;
       align-items: center;
       gap: 2px;
+      min-width: 0;
     }
 
     @media (max-width: 760px) {
