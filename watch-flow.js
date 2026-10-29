@@ -273,8 +273,8 @@
     const callout = document.createElement("div");
     callout.className = "discussion-callout";
     callout.innerHTML = `
-      <strong>Everyone’s watched it — time to get together and discuss it.</strong>
-      <span>Have the conversation first, then add your score and quick review. The next film will only be chosen when all four reviews are in.</span>
+      <strong>Watched it? Add your score and quick review.</strong>
+      <span>You do not need to wait for anyone else. Saving your review also marks the film as watched for you; the next film is chosen only when all four reviews are in.</span>
     `;
 
     panel.insertAdjacentElement("beforebegin", callout);
@@ -295,7 +295,7 @@
 
     const note = section.querySelector(".section-note.wide");
     if (note) {
-      note.textContent = "The club watches one film at a time. When all four have watched it, get together and discuss it; after all four scores and quick reviews are saved, the next eligible film is chosen automatically.";
+      note.textContent = "The club watches one film at a time. Once you have watched the current film, add your score and quick review. Saving it also marks the film as watched for you. The next eligible film is chosen only after all four reviews are in.";
     }
 
     grid.querySelectorAll(":scope > .next-film-waiting").forEach(node => node.remove());
@@ -345,9 +345,12 @@
         card.style.order = "-1";
         addCurrentBanner(card, movie);
 
-        if (watchedButton) watchedButton.disabled = false;
+        if (watchedButton) {
+          watchedButton.disabled = true;
+          watchedButton.classList.add("hidden");
+        }
 
-        if (allWatched(movie) && !reviewComplete(movie)) {
+        if (!reviewComplete(movie)) {
           addDiscussionPrompt(card);
         }
 
@@ -356,7 +359,10 @@
 
       if (reviewComplete(movie)) {
         card.classList.add("completed-film-card");
-        if (watchedButton) watchedButton.disabled = true;
+        if (watchedButton) {
+          watchedButton.disabled = true;
+          watchedButton.classList.add("hidden");
+        }
 
         const body = card.querySelector(".movie-body");
         if (body) {
@@ -371,6 +377,7 @@
       card.classList.add("waiting-film-card");
       if (watchedButton) {
         watchedButton.disabled = true;
+        watchedButton.classList.add("hidden");
         watchedButton.textContent = "Waiting its turn";
       }
 
