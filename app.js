@@ -3594,6 +3594,12 @@ function renderMovies() {
           movie
         );
 
+      // The current film can be reviewed as soon as someone has watched it.
+      // Legacy films that were already marked 4/4 watched remain unlocked.
+      const reviewAvailable =
+        unlocked ||
+        movie.id === state.currentMovieId;
+
 
       card.querySelector(
         ".review-lock"
@@ -3601,7 +3607,7 @@ function renderMovies() {
 
         "hidden",
 
-        unlocked
+        reviewAvailable
 
       );
 
@@ -3616,13 +3622,13 @@ function renderMovies() {
 
         "hidden",
 
-        !unlocked
+        !reviewAvailable
 
       );
 
 
       if (
-        unlocked
+        reviewAvailable
       ) {
 
         const score =
@@ -3662,16 +3668,49 @@ function renderMovies() {
             "click",
             async () => {
 
+              const scoreValue =
+                score.value;
+
+              const reviewValue =
+                review.value.trim();
+
+
+              if (
+                !scoreValue ||
+                !reviewValue
+              ) {
+
+                alert(
+                  "Add both your score and a quick review before saving."
+                );
+
+                return;
+
+              }
+
+
               movie.ratings[
                 state.activePerson
               ] =
-                score.value;
+                scoreValue;
 
 
               movie.reviews[
                 state.activePerson
               ] =
-                review.value.trim();
+                reviewValue;
+
+
+              movie.watched =
+                movie.watched || {};
+
+
+              // A submitted review is now the single proof that this person
+              // has watched the film. Existing watched flags are preserved.
+              movie.watched[
+                state.activePerson
+              ] =
+                true;
 
 
               await saveState();
@@ -3680,6 +3719,8 @@ function renderMovies() {
               renderMovies();
 
               renderRanking();
+
+              renderPhases();
 
             }
           );
